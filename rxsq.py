@@ -19,7 +19,6 @@ password = os.environ["password"]
 USER_NAME = os.environ["USER_NAME"]
 PHONE_NUMBER = os.environ["PHONE_NUMBER"]
 ID_NO = os.environ["ID_NO"]
-KU = os.environ["KU"]
 
 # 行程卡信息
 scope = '162052471086425'
