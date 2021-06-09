@@ -1,0 +1,43 @@
+name: SEU Auto Temperature
+on:
+  schedule:
+    - cron: '30 22 * * *'
+    # cron表达式，时区是UTC时间，比我们早8小时，如上所表示的是每天UTC时间的22点30分整， 北京时间的6点30分（24小时制）
+    # 可在此网站查询UTC时间和北京时间的换算关系 https://datetime360.com/cn/utc-beijing-time/
+  watch:
+    types: started
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: 'Checkout codes'
+        uses: actions/checkout@v1
+      - name: 'Set up Python'
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+      - name: 'Install requirements'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: 'cp'
+        run: |
+          sudo cp -r ./ /usr/bin/
+          sudo chmod -R 777 /usr/bin/
+      - name: Run
+        env:
+          TZ: Asia/Shanghai
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          KU: ${{ secrets.KU }}
+          PHONE_NUMBER: ${{ secrets.PHONE_NUMBER }}
+          ID_NO: ${{ secrets.ID_NO }}
+        run: |
+          python3 rxsq.py
