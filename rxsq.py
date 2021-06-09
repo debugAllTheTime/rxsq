@@ -6,11 +6,8 @@ from datetime import date, timedelta
 from lxml import etree
 import execjs
 import os
-
-
-def kutui_post(Subject, Message, Kutui_key):
-    url = 'https://push.xuthus.cc/send/' + Kutui_key + '?c=' + Subject + '\n\n' + Message
-    r = requests.post(url)
+from email.mime.text import MIMEText
+import smtplib
 
 
 
@@ -27,6 +24,31 @@ KU = os.environ["KU"]
 # 行程卡信息
 scope = '162052471086425'
 filetoken = scope+'1'
+
+
+#设置服务器所需信息
+#163邮箱服务器地址
+mail_host = 'smtp.seu.edu.cn'  
+#163用户名
+mail_user = username+'@seu.edu.cn'  
+#密码(部分邮箱为授权码) 
+mail_pass = password
+#邮件发送方邮箱地址
+sender = username+'213161556@seu.edu.cn'  
+#邮件接受方邮箱地址，注意需要[]包裹，这意味着你可以写多个邮件地址群发
+receivers = ['774040105@qq.com'] 
+
+#设置email信息
+#邮件内容设置
+message = MIMEText('打卡成功','plain','utf-8')
+#邮件主题       
+message['Subject'] = '打卡成功' 
+#发送方信息
+message['From'] = sender 
+#接受方信息     
+message['To'] = receivers[0]  
+
+
 
 # 登录url
 base_addr = 'http://ehall.seu.edu.cn/'
@@ -233,4 +255,18 @@ print(startFlow_response.text)
 subject = str(tomorrow)
 subject = subject+'入校申请\t成功'
 msg = str(tomorrow)+'入校申请成功'
-kutui_post(msg,msg,KU)
+
+try:
+    smtpObj = smtplib.SMTP() 
+    #######替换为########
+    smtpObj = smtplib.SMTP_SSL(mail_host,port=465)   
+    #登录到服务器
+    smtpObj.login(mail_user,mail_pass) 
+    #发送
+    smtpObj.sendmail(
+        sender,receivers,msg) 
+    #退出
+    smtpObj.quit() 
+    print('success')
+except smtplib.SMTPException as e:
+    print('error',e) #打印错误
