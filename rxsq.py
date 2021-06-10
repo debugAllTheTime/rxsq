@@ -48,10 +48,16 @@ message['From'] = sender
 message['To'] = receivers[0]  
 
 
-print(startFlow_response.text)
-subject = str(tomorrow)
+
+
+tomorrow_year = (date.today() + timedelta(days=1)).strftime("%Y")
+tomorrow_month = (date.today() + timedelta(days=1)).strftime("%m")
+tomorrow_day = (date.today() + timedelta(days=1)).strftime("%d")
+tomorrow_date = str(tomorrow_year)+"-"+str(tomorrow_month)+"-"+str(tomorrow_day)
+#print(startFlow_response.text)
+subject = str(tomorrow_date)
 subject = subject+'入校申请\t成功'
-msg = str(tomorrow)+'入校申请成功'
+msg = str(tomorrow_date)+'入校申请成功'
 
 
 
@@ -68,7 +74,7 @@ try:
     smtpObj.login(mail_user,mail_pass) 
     #发送
     smtpObj.sendmail(
-        sender,receivers,tomorrow_date+msg) 
+        sender,receivers,msg) 
     #退出
     smtpObj.quit() 
     print('success')
