@@ -74,7 +74,7 @@ try:
     smtpObj.login(mail_user,mail_pass) 
     #发送
     smtpObj.sendmail(
-        sender,receivers,message) 
+        sender,receivers,message.as_string()) 
     #退出
     smtpObj.quit() 
     print('success')
