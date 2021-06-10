@@ -37,15 +37,7 @@ sender = username+'@seu.edu.cn'
 #邮件接受方邮箱地址，注意需要[]包裹，这意味着你可以写多个邮件地址群发
 receivers = ['774040105@qq.com'] 
 
-#设置email信息
-#邮件内容设置
-message = MIMEText('打卡成功','plain','utf-8')
-#邮件主题       
-message['Subject'] = '打卡成功' 
-#发送方信息
-message['From'] = sender 
-#接受方信息     
-message['To'] = receivers[0]  
+
 
 
 
@@ -62,10 +54,18 @@ msg = str(tomorrow_date)+'入校申请成功'
 
 
 
-tomorrow_year = (date.today() + timedelta(days=1)).strftime("%Y")
-tomorrow_month = (date.today() + timedelta(days=1)).strftime("%m")
-tomorrow_day = (date.today() + timedelta(days=1)).strftime("%d")
-tomorrow_date = str(tomorrow_year)+"-"+str(tomorrow_month)+"-"+str(tomorrow_day)
+
+
+
+#设置email信息
+#邮件内容设置
+message = MIMEText(msg,'plain','utf-8')
+#邮件主题       
+message['Subject'] = '打卡成功' 
+#发送方信息
+message['From'] = sender 
+#接受方信息     
+message['To'] = receivers[0]  
 try:
     smtpObj = smtplib.SMTP() 
     #######替换为########
@@ -74,7 +74,7 @@ try:
     smtpObj.login(mail_user,mail_pass) 
     #发送
     smtpObj.sendmail(
-        sender,receivers,msg) 
+        sender,receivers,message) 
     #退出
     smtpObj.quit() 
     print('success')
